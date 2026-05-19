@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>VELIXIA — Présentation TikTok / Reels / Shorts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --ivoire:#F8F6F2;
+  --noir:#0F0F0F;
+  --vert:#22C55E;
+  --muted:#7a766e;
+  --blanc:#FFFFFF;
+  --blanc-50:rgba(255,255,255,0.5);
+  --blanc-70:rgba(255,255,255,0.7);
+  --card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(34,197,94,0.2);
+  --rouge:#ef4444;
+  --orange:#f59e0b;
+}
+
+html{
+  width:1080px;
+  height:1920px;
+  overflow:hidden;
+  background:var(--noir);
+}
+
+body{
+  width:1080px;
+  height:1920px;
+  overflow:hidden;
+  background:var(--noir);
+  position:relative;
+  font-family:'DM Sans',sans-serif;
+}
+
+/* ── Persistent elements ───────────────────────────── */
+#vbar{
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:10px;
+  background:var(--vert);
+  transform:scaleY(0);
+  transform-origin:top;
+  z-index:50;
+}
+#green-dot{
+  position:absolute;
+  bottom:240px;
+  left:28px;
+  width:14px;height:14px;
+  border-radius:50%;
+  background:var(--vert);
+  opacity:0;
+  z-index:50;
+}
+#label-brand{
+  position:absolute;
+  top:55px;right:48px;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(255,255,255,0.2);
+  opacity:0;z-index:50;
+}
+
+/* ── Play screen ───────────────────────────────────── */
+#play-screen{
+  position:fixed;inset:0;
+  background:var(--noir);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:1000;cursor:pointer;gap:28px;
+}
+#play-logo{
+  font-family:'Syne',sans-serif;
+  font-size:60px;font-weight:800;color:#fff;
+  letter-spacing:0.05em;
+}
+#play-sub{
+  font-family:'DM Sans',sans-serif;
+  font-size:18px;font-weight:300;
+  color:rgba(255,255,255,0.4);
+  letter-spacing:0.08em;
+}
+#play-btn{
+  font-family:'Syne',sans-serif;
+  font-size:16px;font-weight:700;color:var(--vert);
+  border:2px solid var(--vert);padding:18px 60px;
+  border-radius:50px;letter-spacing:0.14em;text-transform:uppercase;
+  margin-top:12px;
+  transition:background .2s,color .2s;
+}
+#play-btn:hover{background:var(--vert);color:#000;}
+
+/* ── Scene base ────────────────────────────────────── */
+.scene{
+  position:absolute;inset:0;
+  display:none;opacity:0;
+  flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:170px 68px 210px;
+  overflow:hidden;
+}
+.scene.active{display:flex;}
+
+/* ── Typography helpers ────────────────────────────── */
+.t-xl{font-family:'Syne',sans-serif;font-weight:800;font-size:200px;color:#fff;line-height:1.05;text-align:center;}
+.t-lg{font-family:'Syne',sans-serif;font-weight:800;font-size:130px;color:#fff;line-height:1.05;text-align:center;}
+.t-md{font-family:'Syne',sans-serif;font-weight:800;font-size:96px;color:#fff;line-height:1.1;text-align:center;}
+.t-body{font-family:'DM Sans',sans-serif;font-weight:300;font-size:32px;color:rgba(255,255,255,0.6);line-height:1.5;text-align:center;}
+.t-body-dark{font-family:'DM Sans',sans-serif;font-weight:300;font-size:32px;color:var(--noir);line-height:1.5;text-align:center;}
+.t-body-italic{font-family:'DM Sans',sans-serif;font-weight:300;font-style:italic;font-size:32px;color:var(--muted);line-height:1.5;text-align:center;}
+.t-label{font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;letter-spacing:0.15em;text-transform:uppercase;}
+.t-vert{color:var(--vert)!important;}
+.t-rouge{color:var(--rouge)!important;}
+.t-muted{color:var(--muted)!important;}
+.t-dark{color:var(--noir)!important;}
+.t-dim{color:rgba(255,255,255,0.35)!important;}
+.t-center{text-align:center;}
+
+/* ── Source tag ────────────────────────────────────── */
+.source-tag{
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);
+  background:rgba(15,15,15,0.08);
+  border-radius:40px;padding:8px 20px;
+  display:inline-block;opacity:0;
+}
+.source-tag-dark{
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  display:inline-block;opacity:0;
+}
+
+/* ── Cards ─────────────────────────────────────────── */
+.card-service{
+  background:rgba(34,197,94,0.08);
+  border:1px solid rgba(34,197,94,0.35);
+  border-radius:20px;padding:24px 32px;
+  width:100%;max-width:900px;
+  margin:8 0;
+  display:flex;align-items:center;gap:20px;
+  opacity:0;
+}
+.card-service .card-icon{font-size:38px;flex-shrink:0;}
+.card-service .card-title{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:26px;color:#fff;
+}
+.card-service .card-sub{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:20px;color:var(--muted);margin-top:4px;
+}
+.card-bad{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(239,68,68,0.25);
+  border-radius:16px;padding:18px 28px;
+  width:100%;max-width:900px;
+  margin:6px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  opacity:0;
+}
+.card-bad .cb-text{
+  font-family:'DM Sans',sans-serif;font-weight:400;
+  font-size:24px;color:rgba(255,255,255,0.5);
+}
+.card-bad .cb-time{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:24px;color:rgba(239,68,68,0.7);
+}
+.card-bad .cb-x{
+  color:var(--rouge);font-size:20px;opacity:0;
+}
+
+.card-gloria{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:16px;padding:20px 32px;
+  min-width:380px;
+  display:flex;flex-direction:column;align-items:center;
+  opacity:0;
+}
+.card-gloria .g-year{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:44px;
+}
+.card-gloria .g-time{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:28px;color:rgba(255,255,255,0.7);
+  margin-top:6px;
+}
+
+/* ── Underline element ─────────────────────────────── */
+.underline-vert{
+  height:3px;background:var(--vert);
+  margin-top:8px;border-radius:2px;
+  clip-path:inset(0 100% 0 0);
+  width:100%;
+}
+.underline-rouge{
+  height:3px;background:var(--rouge);
+  margin-top:8px;border-radius:2px;
+  clip-path:inset(0 100% 0 0);
+  width:100%;
+}
+
+/* ── Barred text ────────────────────────────────────── */
+.struck{
+  position:relative;display:inline-block;
+  color:rgba(255,255,255,0.35);
+  font-family:'DM Sans',sans-serif;font-weight:300;font-size:32px;
+}
+.struck .strike-line{
+  position:absolute;left:0;top:50%;
+  height:2px;background:var(--rouge);
+  width:0%;margin-top:-1px;
+  border-radius:1px;
+}
+
+/* ── Counter ────────────────────────────────────────── */
+#counter-53{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:220px;color:var(--vert);
+  line-height:1;opacity:0;
+}
+
+/* ── Big "3" scene ─────────────────────────────────── */
+#big-3{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:400px;color:var(--noir);
+  line-height:1;opacity:0;
+}
+#big-3-word{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:100px;color:var(--noir);
+  opacity:0;
+}
+
+/* ── Problem list items ─────────────────────────────── */
+.problem-item{
+  display:flex;align-items:center;gap:16px;
+  width:100%;max-width:900px;
+  margin:6px 0;opacity:0;
+}
+.problem-item .px{
+  color:var(--rouge);font-size:28px;flex-shrink:0;
+}
+.problem-item .pt{
+  font-family:'DM Sans',sans-serif;font-weight:400;
+  font-size:26px;color:rgba(255,255,255,0.6);
+}
+
+/* ── Word-by-word container ─────────────────────────── */
+.word-stream{
+  text-align:center;line-height:1.55;
+  max-width:900px;
+}
+.word-stream span{
+  display:inline;opacity:0;
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:32px;
+}
+
+/* ── Gloria arrow ───────────────────────────────────── */
+#gloria-arrow{
+  width:3px;height:0;background:var(--rouge);
+  margin:12px auto;border-radius:2px;
+  position:relative;opacity:0;
+}
+#gloria-arrow::after{
+  content:'';position:absolute;
+  bottom:-10px;left:50%;transform:translateX(-50%);
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:12px solid var(--rouge);
+}
+
+/* ── Comparison cols ────────────────────────────────── */
+#compare-wrap{
+  display:flex;align-items:center;justify-content:center;
+  gap:40px;margin-top:24px;opacity:0;
+}
+#comp-old{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:60px;color:var(--rouge);
+  text-decoration:line-through;opacity:.7;
+}
+#comp-new{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:80px;color:var(--vert);
+}
+#comp-cheaper{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:64px;color:var(--vert);
+  opacity:0;margin-top:16px;text-align:center;
+}
+
+/* ── 47sec lines ────────────────────────────────────── */
+.line-47{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:50px;color:#fff;
+  opacity:0;text-align:left;
+  width:100%;max-width:900px;
+}
+
+/* ── Outro ──────────────────────────────────────────── */
+#outro-logo{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:110px;color:#fff;
+  letter-spacing:0.04em;opacity:0;
+}
+#outro-dot{
+  display:inline-block;width:14px;height:14px;
+  border-radius:50%;background:var(--vert);
+  margin-left:12px;vertical-align:middle;opacity:0;
+}
+#outro-tag{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:24px;color:rgba(255,255,255,0.5);
+  text-align:center;max-width:900px;
+  opacity:0;margin-top:16px;
+}
+#outro-url{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:72px;color:var(--vert);
+  opacity:0;margin-top:24px;
+}
+#outro-underline{
+  height:3px;background:var(--vert);
+  border-radius:2px;margin-top:8px;
+  clip-path:inset(0 100% 0 0);
+  max-width:320px;width:100%;
+  opacity:0;
+}
+.outro-info{
+  font-family:'DM Sans',sans-serif;font-weight:400;
+  font-size:22px;color:rgba(255,255,255,0.35);
+  text-align:center;opacity:0;margin-top:8px;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ PLAY SCREEN ═══════════════ -->
+<div id="play-screen" onclick="startVideo()">
+  <div id="play-logo">VELIXIA</div>
+  <div id="play-sub">Agence Digitale &amp; IA — Lyon</div>
+  <div id="play-btn">▶ LANCER LA PRÉSENTATION</div>
+</div>
+
+<!-- ═══════════════ PERSISTENT UI ═══════════════ -->
+<div id="vbar"></div>
+<div id="green-dot"></div>
+<div id="label-brand">VELIXIA × IA</div>
+
+<!-- ═══════════════ SCENE 0 — COLD OPEN ═══════════════ -->
+<div id="scene-cold" class="scene"></div>
+
+<!-- ═══════════════ SCENE 1 — IMAGINEZ ═══════════════ -->
+<div id="scene-imaginez" class="scene" style="flex-direction:column;gap:18px;">
+  <div id="s1-imaginez" class="t-xl" style="opacity:0;">Imaginez.</div>
+  <div id="s1-client" class="t-body" style="opacity:0;">Votre futur client</div>
+  <div id="s1-phone" class="t-body" style="opacity:0;">ouvre son téléphone…</div>
+  <div id="s1-concurrent" class="t-body" style="opacity:0;">tombe sur votre concurrent…</div>
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+    <span id="s1-eten" class="t-body" style="opacity:0;">et en</span>
+    <span id="s1-50ms" class="t-lg t-vert" style="opacity:0;">50 millisecondes</span>
+  </div>
+  <div id="s1-decide" class="t-md" style="opacity:0;margin-top:8px;">il a déjà décidé.</div>
+</div>
+
+<!-- ═══════════════ SCENE 2 — CHIFFRES ═══════════════ -->
+<div id="scene-chiffres" class="scene" style="flex-direction:column;gap:28px;align-items:flex-start;padding-left:100px;">
+  <div class="struck" id="s2-3s" style="opacity:0;">Pas en 3 secondes.<div class="strike-line" id="sl1"></div></div>
+  <div class="struck" id="s2-1s" style="opacity:0;">Pas en 1 seconde.<div class="strike-line" id="sl2"></div></div>
+  <div id="s2-50ms" class="t-lg t-vert" style="opacity:0;margin-top:8px;">En 50 millisecondes.</div>
+</div>
+
+<!-- ═══════════════ SCENE 3 — CARLETON ═══════════════ -->
+<div id="scene-carleton" class="scene" style="flex-direction:column;gap:20px;background:var(--ivoire);">
+  <div id="s3-tag" class="source-tag">Université de Carleton — 2002</div>
+  <div id="s3-words1" class="word-stream" style="color:var(--noir);"></div>
+  <div id="s3-words2" class="word-stream t-body-italic" style="font-style:italic;"></div>
+  <div style="position:relative;max-width:900px;width:100%;text-align:center;">
+    <div id="s3-choc" class="t-body" style="font-weight:500;color:var(--noir);opacity:0;font-size:34px;">
+      se forme avant même que le cerveau lise un mot.
+    </div>
+    <div class="underline-vert" id="s3-underline" style="max-width:80%;margin:8px auto 0;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ TRANSITION ═══════════════ -->
+<div id="scene-transition" class="scene">
+  <div id="st-text" style="font-family:'Syne',sans-serif;font-weight:700;font-size:68px;color:#fff;text-align:center;opacity:0;">
+    Et ce n'est pas tout.
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 4 — GOOGLE 53% ═══════════════ -->
+<div id="scene-google" class="scene" style="flex-direction:column;gap:16px;">
+  <div id="s4-tag" class="source-tag-dark">Google / SOASTA Research — 2017</div>
+  <div id="s4-words" class="word-stream"></div>
+  <div id="s4-conclu" class="t-body" style="font-weight:400;font-size:32px;opacity:0;">Leur conclusion —</div>
+  <div id="counter-53" style="margin-top:8px;">0%</div>
+  <div id="s4-sub1" class="t-body" style="opacity:0;font-size:28px;">des visiteurs abandonnent</div>
+  <div id="s4-sub2" class="t-body" style="opacity:0;font-size:28px;">un site qui charge en +3 secondes.</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:12px;">
+    <div id="s4-moitie" class="t-body" style="font-weight:400;font-size:36px;color:#fff;opacity:0;">Plus de la moitié.</div>
+    <div id="s4-partis" class="t-md t-rouge" style="opacity:0;">Partis.</div>
+    <div id="s4-forever" class="t-md t-rouge" style="opacity:0;font-size:60px;">Pour toujours.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 5 — 3 SECONDES ═══════════════ -->
+<div id="scene-3sec" class="scene" style="background:var(--ivoire);flex-direction:column;align-items:center;gap:16px;">
+  <div style="display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;justify-content:center;">
+    <div id="big-3">3</div>
+    <div id="big-3-word">secondes.</div>
+  </div>
+  <div id="s5-sub1" class="t-body-italic" style="opacity:0;max-width:900px;font-size:30px;">
+    pour décider si vous méritez leur attention.
+  </div>
+  <div style="position:relative;max-width:900px;width:100%;text-align:center;">
+    <div id="s5-sub2" class="t-body" style="font-weight:500;color:var(--noir);opacity:0;font-size:30px;">
+      pour décider si vous existez.
+    </div>
+    <div class="underline-vert" id="s5-underline" style="max-width:70%;margin:8px auto 0;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 6 — GLORIA MARK ═══════════════ -->
+<div id="scene-gloria" class="scene" style="flex-direction:column;gap:16px;">
+  <div id="s6-intro" class="t-body" style="font-style:italic;font-size:32px;opacity:0;">Et même quand ils restent…</div>
+  <div id="s6-tag" class="source-tag-dark" style="font-size:12px;">Gloria Mark — UC Irvine — Attention Span (2023)</div>
+  <div id="s6-words" class="word-stream" style="font-size:26px;"></div>
+  <!-- Gloria cards -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px;width:100%;">
+    <div id="gc1" class="card-gloria"><span class="g-year" style="color:var(--vert);">2004</span><span class="g-time">2 min 30 sec</span></div>
+    <div id="gloria-arrow"></div>
+    <div id="gc2" class="card-gloria"><span class="g-year" style="color:var(--orange);">2012</span><span class="g-time">75 secondes</span></div>
+    <div id="gloria-arrow2" style="width:3px;height:0;background:var(--rouge);margin:8px auto;border-radius:2px;opacity:0;position:relative;">
+      <span style="position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid var(--rouge);"></span>
+    </div>
+    <div id="gc3" class="card-gloria" style="transform:scale(1.08);"><span class="g-year t-rouge">2023</span><span class="g-time">47 secondes</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 7 — 47 SECONDES ═══════════════ -->
+<div id="scene-47" class="scene" style="flex-direction:column;align-items:flex-start;gap:20px;padding-left:80px;">
+  <div id="s7-main" class="t-xl t-vert" style="opacity:0;">47 secondes.</div>
+  <div class="underline-vert" id="s7-underline" style="max-width:400px;opacity:0;clip-path:inset(0 100% 0 0);"></div>
+  <div id="s7-l1" class="line-47" style="opacity:0;">pour convaincre.</div>
+  <div id="s7-l2" class="line-47" style="opacity:0;color:rgba(255,255,255,0.75);">pour vendre.</div>
+  <div id="s7-l3" class="line-47 t-vert" style="opacity:0;display:flex;align-items:center;gap:12px;">pour tout. <span id="s7-dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--vert);opacity:0;"></span></div>
+</div>
+
+<!-- ═══════════════ SCENE 8 — QUESTION ═══════════════ -->
+<div id="scene-question" class="scene" style="background:var(--ivoire);flex-direction:column;gap:24px;">
+  <div id="s8-title" class="t-md t-dark" style="opacity:0;">Posez-vous cette question.</div>
+  <div id="s8-words" class="word-stream t-body-italic" style="color:var(--muted);font-size:28px;"></div>
+  <div style="position:relative;max-width:900px;width:100%;text-align:center;">
+    <div id="s8-question" class="t-body" style="font-weight:500;color:var(--noir);opacity:0;font-size:34px;">
+      mérite ces 47 secondes ?
+    </div>
+    <div class="underline-vert" id="s8-underline" style="max-width:60%;margin:8px auto 0;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 9 — CONCURRENTS ═══════════════ -->
+<div id="scene-concurrents" class="scene" style="flex-direction:column;align-items:center;gap:10px;">
+  <div id="s9-p1" class="problem-item"><span class="px">✗</span><span class="pt">Un site mal conçu.</span></div>
+  <div id="s9-p2" class="problem-item"><span class="px">✗</span><span class="pt">Des réseaux abandonnés.</span></div>
+  <div id="s9-p3" class="problem-item"><span class="px">✗</span><span class="pt">Des visuels qui ne donnent pas envie.</span></div>
+  <div id="s9-perdus" style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:30px;color:var(--rouge);text-align:center;opacity:0;margin-top:8px;">=&nbsp;Des clients perdus. Chaque jour. En silence.</div>
+  <div id="s9-sep" style="width:80%;height:1px;background:rgba(255,255,255,0.08);opacity:0;clip-path:inset(0 100% 0 0);margin:4px 0;"></div>
+  <div id="s9-c1" class="card-bad"><span class="cb-text">Site internet</span><span style="display:flex;align-items:center;gap:12px;"><span class="cb-time">3 semaines</span><span class="cb-x" id="cx1">✕</span></span></div>
+  <div id="s9-c2" class="card-bad"><span class="cb-text">Contenu réseaux</span><span style="display:flex;align-items:center;gap:12px;"><span class="cb-time">10 jours</span><span class="cb-x" id="cx2">✕</span></span></div>
+  <div id="s9-c3" class="card-bad"><span class="cb-text">Identité visuelle</span><span style="display:flex;align-items:center;gap:12px;"><span class="cb-time">1 mois</span><span class="cb-x" id="cx3">✕</span></span></div>
+  <div id="s9-c4" class="card-bad" style="border-color:rgba(239,68,68,0.5);"><span class="cb-text" style="font-weight:500;">Facturé</span><span style="display:flex;align-items:center;gap:12px;"><span class="cb-time" style="font-size:28px;">plusieurs milliers €</span><span class="cb-x" id="cx4">✕</span></span></div>
+</div>
+
+<!-- ═══════════════ SCENE 10 — VELIXIA REVEAL ═══════════════ -->
+<div id="scene-velixia" class="scene" style="flex-direction:column;gap:20px;">
+  <div id="s10-name" class="t-xl" style="opacity:0;">Velixia</div>
+  <div id="s10-diff" class="t-body" style="font-style:italic;font-size:36px;opacity:0;">c'est différent.</div>
+  <div id="s10-ia" class="word-stream" style="font-size:26px;color:rgba(255,255,255,0.45);"></div>
+  <div id="compare-wrap">
+    <div id="comp-old">3 semaines</div>
+    <div style="font-size:32px;color:rgba(255,255,255,0.3);">→</div>
+    <div id="comp-new">24 heures</div>
+  </div>
+  <div id="comp-cheaper">À 3× moins cher.</div>
+</div>
+
+<!-- ═══════════════ SCENE 11 — SERVICES ═══════════════ -->
+<div id="scene-services" class="scene" style="flex-direction:column;gap:12px;">
+  <div id="sv1" class="card-service">
+    <span class="card-icon">📱</span>
+    <div><div class="card-title">Réseaux Sociaux</div><div class="card-sub">20 posts/mois créés &amp; programmés</div></div>
+  </div>
+  <div id="sv2" class="card-service">
+    <span class="card-icon">🌐</span>
+    <div><div class="card-title">Sites Internet</div><div class="card-sub">Livrés en 72h, SEO intégré</div></div>
+  </div>
+  <div id="sv3" class="card-service">
+    <span class="card-icon">✨</span>
+    <div><div class="card-title">Visuels IA</div><div class="card-sub">Haute définition, sans shooting</div></div>
+  </div>
+  <div id="sv-tout" class="t-xl" style="opacity:0;margin-top:16px;">TOUT.</div>
+</div>
+
+<!-- ═══════════════ SCENE 12 — CONCLUSION ═══════════════ -->
+<div id="scene-conclusion" class="scene" style="background:var(--ivoire);flex-direction:column;gap:20px;">
+  <div id="s12-words1" class="word-stream t-body-italic" style="color:var(--muted);"></div>
+  <div id="s12-words2" class="word-stream" style="color:var(--noir);font-weight:400;"></div>
+  <div style="position:relative;max-width:900px;width:100%;text-align:center;">
+    <div id="s12-words3" class="word-stream" style="color:var(--noir);font-weight:500;"></div>
+    <div class="underline-rouge" id="s12-underline" style="max-width:80%;margin:8px auto 0;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 13 — OUTRO ═══════════════ -->
+<div id="scene-outro" class="scene" style="flex-direction:column;align-items:center;gap:8px;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="outro-logo">VELIXIA</div>
+    <div id="outro-dot"></div>
+  </div>
+  <div id="outro-tag">L'agence IA qui va plus vite, plus loin, pour moins cher.</div>
+  <div class="outro-info" id="out-i1">Disponible 24h/24, 7j/7</div>
+  <div class="outro-info" id="out-i2">Basée à Lyon · Partout en France</div>
+  <div id="outro-url">velix-ia.com</div>
+  <div id="outro-underline"></div>
+</div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════
+//  FORMAT CONFIG
+// ═══════════════════════════════════════════════════════
+const FORMAT = 'tiktok';
+
+// ═══════════════════════════════════════════════════════
+//  AUDIO
+// ═══════════════════════════════════════════════════════
+const audio = new Audio('./velixia_voiceover_v1.mp3');
+audio.preload = 'auto';
+
+const triggered = new Set();
+
+// ═══════════════════════════════════════════════════════
+//  ANIMATION UTILITIES
+// ═══════════════════════════════════════════════════════
+function fadeUp(el, delay=0, dur=400, dist=20){
+  el.style.opacity='0';
+  el.animate([
+    {opacity:0, transform:`translateY(${dist}px)`},
+    {opacity:1, transform:'translateY(0)'}
+  ],{duration:dur, delay, fill:'forwards', easing:'ease-out'});
+}
+
+function fadeIn(el, delay=0, dur=350){
+  el.style.opacity='0';
+  el.animate([{opacity:0},{opacity:1}],{duration:dur,delay,fill:'forwards',easing:'ease-out'});
+}
+
+function fadeOut(el, dur=350){
+  el.animate([{opacity:1},{opacity:0}],{duration:dur,fill:'forwards',easing:'ease-in'});
+}
+
+function springPop(el, delay=0, dur=600){
+  el.style.opacity='0';
+  el.animate([
+    {opacity:0, transform:'scale(0.6)'},
+    {opacity:1, transform:'scale(1.08)'},
+    {opacity:1, transform:'scale(1.0)'}
+  ],{duration:dur, delay, fill:'forwards',
+     easing:'cubic-bezier(0.34,1.56,0.64,1)'});
+}
+
+function slideFromLeft(el, delay=0, dur=450, dist=40){
+  el.style.opacity='0';
+  el.animate([
+    {opacity:0, transform:`translateX(-${dist}px)`},
+    {opacity:1, transform:'translateX(0)'}
+  ],{duration:dur,delay,fill:'forwards',easing:'ease-out'});
+}
+
+function slideFromRight(el, delay=0, dur=450, dist=50){
+  el.style.opacity='0';
+  el.animate([
+    {opacity:0, transform:`translateX(${dist}px)`},
+    {opacity:1, transform:'translateX(0)'}
+  ],{duration:dur,delay,fill:'forwards',easing:'ease-out'});
+}
+
+function slideFromBottom(el, delay=0, dur=450, dist=50){
+  el.style.opacity='0';
+  el.animate([
+    {opacity:0, transform:`translateY(${dist}px)`},
+    {opacity:1, transform:'translateY(0)'}
+  ],{duration:dur,delay,fill:'forwards',easing:'ease-out'});
+}
+
+function wordByWord(el, text, delayPerWord=80, startDelay=0, color=null){
+  el.innerHTML='';
+  text.split(' ').forEach((word,i)=>{
+    const sp=document.createElement('span');
+    sp.textContent=word+' ';
+    sp.style.opacity='0';
+    sp.style.display='inline';
+    if(color) sp.style.color=color;
+    el.appendChild(sp);
+    sp.animate([
+      {opacity:0, transform:'translateY(10px)'},
+      {opacity:1, transform:'translateY(0)'}
+    ],{duration:320, delay:startDelay+i*delayPerWord, fill:'forwards',easing:'ease-out'});
+  });
+}
+
+function animCounter(el, target, duration=1200, suffix='%', startDelay=0){
+  setTimeout(()=>{
+    const start=performance.now();
+    el.style.opacity='1';
+    (function tick(now){
+      const p=Math.min((now-start)/duration,1);
+      const v=1-Math.pow(1-p,4);
+      el.textContent=Math.round(v*target)+suffix;
+      if(p<1) requestAnimationFrame(tick);
+    })(start);
+  }, startDelay);
+}
+
+function wipeIn(el, dur=500, delay=0){
+  el.style.opacity='1';
+  setTimeout(()=>{
+    el.animate([
+      {clipPath:'inset(0 100% 0 0)'},
+      {clipPath:'inset(0 0% 0 0)'}
+    ],{duration:dur, fill:'forwards', easing:'ease-out'});
+  }, delay);
+}
+
+function shake(el){
+  el.animate([
+    {transform:'translateX(0)'},
+    {transform:'translateX(-10px)'},
+    {transform:'translateX(8px)'},
+    {transform:'translateX(-6px)'},
+    {transform:'translateX(6px)'},
+    {transform:'translateX(0)'}
+  ],{duration:450, easing:'ease-in-out'});
+}
+
+function pulse(el, scale=1.6, speed=900){
+  el.style.opacity='1';
+  el.animate([
+    {transform:'scale(1)', opacity:'1'},
+    {transform:`scale(${scale})`, opacity:'0.4'},
+    {transform:'scale(1)', opacity:'1'}
+  ],{duration:speed, iterations:Infinity, easing:'ease-in-out'});
+}
+
+function scaleYIn(el, dur=500, delay=0){
+  setTimeout(()=>{
+    el.animate([
+      {transform:'scaleY(0)'},
+      {transform:'scaleY(1)'}
+    ],{duration:dur, fill:'forwards', easing:'ease-out'});
+  }, delay);
+}
+
+function bgTo(color, dur=500){
+  document.body.animate([
+    {backgroundColor: getComputedStyle(document.body).backgroundColor},
+    {backgroundColor: color}
+  ],{duration:dur, fill:'forwards', easing:'ease-in-out'});
+}
+
+// Strike a line over a .struck element
+function strikeThrough(lineEl, dur=400, delay=0){
+  setTimeout(()=>{
+    lineEl.animate([{width:'0%'},{width:'105%'}],
+      {duration:dur, fill:'forwards', easing:'ease-out'});
+  }, delay);
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCENE MANAGEMENT
+// ═══════════════════════════════════════════════════════
+let currentSceneId = null;
+
+function showScene(id, transIn=350, transOut=300){
+  if(currentSceneId && currentSceneId !== id){
+    const prev = document.getElementById(currentSceneId);
+    if(prev){
+      prev.animate([{opacity:1},{opacity:0}],{duration:transOut, fill:'forwards'});
+      setTimeout(()=>{ prev.style.display='none'; prev.classList.remove('active'); }, transOut);
+    }
+  }
+  const next = document.getElementById(id);
+  if(next){
+    next.style.display = 'flex';
+    next.classList.add('active');
+    next.animate([{opacity:0},{opacity:1}],{duration:transIn, fill:'forwards'});
+    currentSceneId = id;
+  }
+}
+
+function hideScene(id, dur=350){
+  const el = document.getElementById(id);
+  if(el){
+    el.animate([{opacity:1},{opacity:0}],{duration:dur, fill:'forwards'});
+    setTimeout(()=>{ el.style.display='none'; el.classList.remove('active'); }, dur);
+    if(currentSceneId===id) currentSceneId=null;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  TIMELINE
+// ═══════════════════════════════════════════════════════
+// [timecode, unique_id, function]
+const TIMELINE = [
+
+  // ── COLD OPEN ──────────────────────────────────────
+  [0.0,  'cold_open',    ()=> showScene('scene-cold', 200, 200)],
+  [0.0,  'vbar_in',      ()=> scaleYIn(document.getElementById('vbar'), 500, 0)],
+  [0.3,  'dot_in',       ()=> { const d=document.getElementById('green-dot'); fadeIn(d,0,300); setTimeout(()=>pulse(d,1.8,900),300); }],
+  [0.5,  'brand_label',  ()=> fadeIn(document.getElementById('label-brand'), 0, 400)],
+
+  // ── SCENE 1 — IMAGINEZ ──────────────────────────────
+  [0.8,  'sc1_show',     ()=> showScene('scene-imaginez',400)],
+  [0.8,  'imaginez',     ()=> fadeUp(document.getElementById('s1-imaginez'),0,400)],
+  [2.1,  'futur',        ()=> fadeUp(document.getElementById('s1-client'),0,380)],
+  [2.9,  'phone',        ()=> fadeUp(document.getElementById('s1-phone'),0,380)],
+  [3.6,  'concurrent',   ()=> fadeUp(document.getElementById('s1-concurrent'),0,380)],
+  [4.2,  'eten',         ()=> fadeIn(document.getElementById('s1-eten'),0,300)],
+  [4.5,  '50ms',         ()=> springPop(document.getElementById('s1-50ms'),0,600)],
+  [5.3,  'decide',       ()=> slideFromRight(document.getElementById('s1-decide'),0,450)],
+  [6.5,  'sc1_out',      ()=> hideScene('scene-imaginez',400)],
+
+  // ── SCENE 2 — CHIFFRES ──────────────────────────────
+  [6.5,  'sc2_show',     ()=> showScene('scene-chiffres',350)],
+  [6.8,  's2_3s',        ()=> { fadeIn(document.getElementById('s2-3s'),0,350); strikeThrough(document.getElementById('sl1'),400,200); }],
+  [7.8,  's2_1s',        ()=> { fadeIn(document.getElementById('s2-1s'),0,350); strikeThrough(document.getElementById('sl2'),400,200); }],
+  [8.6,  's2_50ms',      ()=> springPop(document.getElementById('s2-50ms'),0,500)],
+  [9.5,  'sc2_out',      ()=> hideScene('scene-chiffres',300)],
+
+  // ── SCENE 3 — CARLETON ──────────────────────────────
+  [10.0, 'sc3_bg',       ()=> bgTo('#F8F6F2',500)],
+  [10.0, 'sc3_show',     ()=> showScene('scene-carleton',500)],
+  [10.3, 's3_tag',       ()=> fadeUp(document.getElementById('s3-tag'),0,400,-10)],
+  [11.2, 's3_words1',    ()=> wordByWord(document.getElementById('s3-words1'),
+                             "L'Université de Carleton a prouvé en 2002…", 70, 0, '#0F0F0F')],
+  [13.5, 's3_words2',    ()=> wordByWord(document.getElementById('s3-words2'),
+                             "La première impression visuelle d'un site…", 70, 0)],
+  [15.0, 's3_choc',      ()=> { fadeIn(document.getElementById('s3-choc'),0,400); wipeIn(document.getElementById('s3-underline'),600,400); }],
+  [16.2, 'sc3_out',      ()=> hideScene('scene-carleton',400)],
+
+  // ── TRANSITION ──────────────────────────────────────
+  [16.5, 'sc_trans_bg',  ()=> bgTo('#0F0F0F',300)],
+  [16.5, 'sc_trans_show',()=> showScene('scene-transition',300)],
+  [16.8, 'trans_text',   ()=> {
+    const el=document.getElementById('st-text');
+    const words=el.textContent.trim().split(' ');
+    el.innerHTML='';
+    el.style.opacity='1';
+    words.forEach((w,i)=>{
+      const sp=document.createElement('span');
+      sp.textContent=w+' ';
+      sp.style.opacity='0';
+      sp.style.display='inline-block';
+      el.appendChild(sp);
+      sp.animate([{opacity:0,transform:'scale(0.7)'},{opacity:1,transform:'scale(1)'}],
+        {duration:300,delay:i*150,fill:'forwards',easing:'cubic-bezier(0.34,1.56,0.64,1)'});
+    });
+  }],
+  [17.4, 'sc_trans_out', ()=> hideScene('scene-transition',300)],
+
+  // ── SCENE 4 — GOOGLE 53% ────────────────────────────
+  [17.5, 'sc4_show',     ()=> showScene('scene-google',400)],
+  [17.8, 's4_tag',       ()=> fadeIn(document.getElementById('s4-tag'),0,400)],
+  [18.2, 's4_words',     ()=> wordByWord(document.getElementById('s4-words'),
+                             "Google a analysé des millions de pages mobiles en 2017.", 75)],
+  [20.0, 's4_conclu',    ()=> fadeIn(document.getElementById('s4-conclu'),0,350)],
+  [21.0, 's4_counter',   ()=> animCounter(document.getElementById('counter-53'),53,1200,'%')],
+  [22.3, 's4_sub1',      ()=> fadeIn(document.getElementById('s4-sub1'),0,350)],
+  [23.0, 's4_sub2',      ()=> fadeIn(document.getElementById('s4-sub2'),0,350)],
+  [24.2, 's4_moitie',    ()=> springPop(document.getElementById('s4-moitie'),0,400)],
+  [25.0, 's4_partis',    ()=> springPop(document.getElementById('s4-partis'),0,350)],
+  [25.6, 's4_forever',   ()=> fadeIn(document.getElementById('s4-forever'),0,350)],
+  [26.2, 'sc4_out',      ()=> hideScene('scene-google',400)],
+
+  // ── SCENE 5 — 3 SECONDES ────────────────────────────
+  [26.5, 'sc5_bg',       ()=> bgTo('#F8F6F2',500)],
+  [26.5, 'sc5_show',     ()=> showScene('scene-3sec',500)],
+  [27.0, 'big3_in',      ()=> springPop(document.getElementById('big-3'),0,500)],
+  [28.2, 'big3w_in',     ()=> slideFromRight(document.getElementById('big-3-word'),0,450)],
+  [29.5, 's5_sub1',      ()=> fadeUp(document.getElementById('s5-sub1'),0,400)],
+  [31.0, 's5_sub2',      ()=> { fadeIn(document.getElementById('s5-sub2'),0,400); wipeIn(document.getElementById('s5-underline'),600,400); }],
+  [32.0, 'sc5_out',      ()=> hideScene('scene-3sec',400)],
+
+  // ── SCENE 6 — GLORIA MARK ───────────────────────────
+  [32.0, 'sc6_bg',       ()=> bgTo('#0F0F0F',300)],
+  [32.0, 'sc6_show',     ()=> showScene('scene-gloria',350)],
+  [32.3, 's6_intro',     ()=> fadeIn(document.getElementById('s6-intro'),0,400)],
+  [33.5, 's6_tag',       ()=> fadeIn(document.getElementById('s6-tag'),0,400)],
+  [34.2, 's6_words',     ()=> wordByWord(document.getElementById('s6-words'),
+                             "mesure notre temps d'attention sur écran depuis 20 ans.", 65)],
+  [36.0, 'gc1_in',       ()=> slideFromBottom(document.getElementById('gc1'),0,400)],
+  [37.0, 'garrow1_in',   ()=> {
+    const a=document.getElementById('gloria-arrow');
+    a.style.opacity='1';
+    a.animate([{height:'0px'},{height:'40px'}],{duration:400,fill:'forwards',easing:'ease-out'});
+  }],
+  [38.0, 'gc2_in',       ()=> slideFromBottom(document.getElementById('gc2'),0,400)],
+  [39.5, 'garrow2_in',   ()=> {
+    const a=document.getElementById('gloria-arrow2');
+    a.style.opacity='1';
+    a.animate([{height:'0px'},{height:'40px'}],{duration:400,fill:'forwards',easing:'ease-out'});
+  }],
+  [40.0, 'gc3_in',       ()=> slideFromBottom(document.getElementById('gc3'),0,400)],
+  [42.5, 'sc6_out',      ()=> hideScene('scene-gloria',300)],
+
+  // ── SCENE 7 — 47 SECONDES ───────────────────────────
+  [43.0, 'sc7_show',     ()=> showScene('scene-47',350)],
+  [43.0, 's7_main',      ()=> springPop(document.getElementById('s7-main'),0,600)],
+  [43.5, 's7_underline', ()=> { const u=document.getElementById('s7-underline'); u.style.opacity='1'; wipeIn(u,500); }],
+  [44.5, 's7_l1',        ()=> slideFromLeft(document.getElementById('s7-l1'),0,450)],
+  [46.0, 's7_l2',        ()=> slideFromLeft(document.getElementById('s7-l2'),0,450)],
+  [47.5, 's7_l3',        ()=> {
+    const l=document.getElementById('s7-l3');
+    const d=document.getElementById('s7-dot');
+    springPop(l,0,500);
+    setTimeout(()=>{ d.style.opacity='1'; pulse(d,2.0,700); }, 500);
+  }],
+  [49.0, 'sc7_out',      ()=> hideScene('scene-47',500)],
+
+  // ── SCENE 8 — QUESTION ──────────────────────────────
+  [50.0, 'sc8_bg',       ()=> bgTo('#F8F6F2',500)],
+  [50.0, 'sc8_show',     ()=> showScene('scene-question',500)],
+  [50.3, 's8_title',     ()=> springPop(document.getElementById('s8-title'),0,400)],
+  [52.0, 's8_words',     ()=> wordByWord(document.getElementById('s8-words'),
+                             "Est-ce que votre présence digitale actuelle…", 80)],
+  [53.5, 's8_q',         ()=> { fadeIn(document.getElementById('s8-question'),0,400); wipeIn(document.getElementById('s8-underline'),600,400); }],
+  [54.3, 'sc8_out',      ()=> hideScene('scene-question',400)],
+
+  // ── SCENE 9 — CONCURRENTS ───────────────────────────
+  [54.5, 'sc9_bg',       ()=> bgTo('#0F0F0F',300)],
+  [54.5, 'sc9_show',     ()=> showScene('scene-concurrents',350)],
+  [55.0, 's9_p1',        ()=> slideFromLeft(document.getElementById('s9-p1'),0,400)],
+  [56.0, 's9_p2',        ()=> slideFromLeft(document.getElementById('s9-p2'),0,400)],
+  [57.0, 's9_p3',        ()=> slideFromLeft(document.getElementById('s9-p3'),0,400)],
+  [58.0, 's9_perdus',    ()=> { const e=document.getElementById('s9-perdus'); e.animate([{opacity:0,transform:'scale(0.95)'},{opacity:1,transform:'scale(1)'}],{duration:400,fill:'forwards',easing:'ease-out'}); }],
+  [59.0, 's9_sep',       ()=> wipeIn(document.getElementById('s9-sep'),500)],
+  [59.3, 's9_c1',        ()=> {
+    const c=document.getElementById('s9-c1');
+    slideFromBottom(c,0,400);
+    setTimeout(()=>{ document.getElementById('cx1').style.opacity='1'; fadeIn(document.getElementById('cx1'),0,300); },600);
+  }],
+  [60.2, 's9_c2',        ()=> {
+    const c=document.getElementById('s9-c2');
+    slideFromBottom(c,0,400);
+    setTimeout(()=>{ document.getElementById('cx2').style.opacity='1'; fadeIn(document.getElementById('cx2'),0,300); },600);
+  }],
+  [61.0, 's9_c3',        ()=> {
+    const c=document.getElementById('s9-c3');
+    slideFromBottom(c,0,400);
+    setTimeout(()=>{ document.getElementById('cx3').style.opacity='1'; fadeIn(document.getElementById('cx3'),0,300); },600);
+  }],
+  [61.8, 's9_c4',        ()=> {
+    const c=document.getElementById('s9-c4');
+    slideFromBottom(c,0,400);
+    setTimeout(()=>{ document.getElementById('cx4').style.opacity='1'; fadeIn(document.getElementById('cx4'),0,300); },600);
+  }],
+  [62.5, 's9_shake',     ()=> {
+    ['s9-c1','s9-c2','s9-c3','s9-c4'].forEach((id,i)=>{
+      setTimeout(()=> shake(document.getElementById(id)), i*60);
+    });
+  }],
+  [62.5, 'sc9_out',      ()=> hideScene('scene-concurrents',500)],
+
+  // ── SCENE 10 — VELIXIA REVEAL ───────────────────────
+  [62.5, 'sc10_show',    ()=> showScene('scene-velixia',400)],
+  [62.5, 'vbar_flash',   ()=> { const v=document.getElementById('vbar'); v.style.transform='scaleY(1)'; v.animate([{opacity:0},{opacity:1},{opacity:1}],{duration:300,fill:'forwards'}); }],
+  [63.0, 's10_name',     ()=> springPop(document.getElementById('s10-name'),0,700)],
+  [64.0, 's10_diff',     ()=> fadeIn(document.getElementById('s10-diff'),0,400)],
+  [65.0, 's10_ia',       ()=> wordByWord(document.getElementById('s10-ia'),
+                             "propulsée par l'intelligence artificielle", 60)],
+  [67.0, 'compare_in',   ()=> {
+    const w=document.getElementById('compare-wrap');
+    w.animate([{opacity:0,transform:'scale(0.8)'},{opacity:1,transform:'scale(1)'}],
+      {duration:500,fill:'forwards',easing:'cubic-bezier(0.34,1.56,0.64,1)'});
+  }],
+  [68.5, 'cheaper_in',   ()=> springPop(document.getElementById('comp-cheaper'),0,400)],
+  [69.5, 'sc10_out',     ()=> hideScene('scene-velixia',500)],
+
+  // ── SCENE 11 — SERVICES ─────────────────────────────
+  [70.0, 'sc11_show',    ()=> showScene('scene-services',400)],
+  [70.3, 'sv1_in',       ()=> slideFromBottom(document.getElementById('sv1'),0,500)],
+  [71.5, 'sv2_in',       ()=> slideFromBottom(document.getElementById('sv2'),0,500)],
+  [72.5, 'sv3_in',       ()=> slideFromBottom(document.getElementById('sv3'),0,500)],
+  [73.5, 'sv_tout',      ()=> springPop(document.getElementById('sv-tout'),0,600)],
+  [74.0, 'sc11_out',     ()=> hideScene('scene-services',500)],
+
+  // ── SCENE 12 — CONCLUSION ───────────────────────────
+  [74.5, 'sc12_bg',      ()=> bgTo('#F8F6F2',600)],
+  [74.5, 'sc12_show',    ()=> showScene('scene-conclusion',600)],
+  [75.0, 's12_w1',       ()=> wordByWord(document.getElementById('s12-words1'),
+                             "Parce que dans un monde où l'attention dure 47 secondes…", 65)],
+  [77.5, 's12_w2',       ()=> wordByWord(document.getElementById('s12-words2'),
+                             "chaque jour sans une présence forte…", 80, 0, '#0F0F0F')],
+  [79.0, 's12_w3',       ()=> { wordByWord(document.getElementById('s12-words3'),
+                             "est un jour offert à vos concurrents.", 80, 0, '#0F0F0F'); wipeIn(document.getElementById('s12-underline'),600,600); }],
+  [80.0, 'sc12_out',     ()=> hideScene('scene-conclusion',500)],
+
+  // ── SCENE 13 — OUTRO ────────────────────────────────
+  [80.0, 'sc13_bg',      ()=> bgTo('#0F0F0F',400)],
+  [80.0, 'sc13_show',    ()=> showScene('scene-outro',400)],
+  [80.0, 'vbar_outro',   ()=> { const v=document.getElementById('vbar'); v.style.transform='scaleY(1)'; wipeIn(v,600); }],
+  [80.5, 'outro_logo',   ()=> springPop(document.getElementById('outro-logo'),0,600)],
+  [81.3, 'outro_dot',    ()=> { const d=document.getElementById('outro-dot'); d.style.opacity='1'; pulse(d,2.0,800); }],
+  [81.8, 'outro_tag',    ()=> fadeIn(document.getElementById('outro-tag'),0,400)],
+  [83.0, 'out_i1',       ()=> fadeIn(document.getElementById('out-i1'),0,350)],
+  [83.4, 'out_i2',       ()=> fadeIn(document.getElementById('out-i2'),0,350)],
+  [84.5, 'outro_url',    ()=> springPop(document.getElementById('outro-url'),0,400)],
+  [84.9, 'outro_und',    ()=> { const u=document.getElementById('outro-underline'); u.style.opacity='1'; wipeIn(u,500); }],
+  [85.5, 'green_dot2',   ()=> {
+    const d=document.getElementById('green-dot');
+    [0,400,800].forEach(delay=>{
+      setTimeout(()=>{
+        d.animate([{transform:'scale(1)',opacity:1},{transform:'scale(2.5)',opacity:0},{transform:'scale(1)',opacity:1}],
+          {duration:400,easing:'ease-in-out'});
+      }, delay);
+    });
+  }],
+  [87.0, 'fade_black',   ()=> {
+    document.body.animate([{opacity:1},{opacity:0}],{duration:1500, fill:'forwards', easing:'ease-in'});
+  }],
+
+];
+
+// ═══════════════════════════════════════════════════════
+//  SYNC ENGINE
+// ═══════════════════════════════════════════════════════
+let rafId = null;
+
+function syncLoop(){
+  const t = audio.currentTime;
+  for(const [time, id, fn] of TIMELINE){
+    if(t >= time - 0.08 && !triggered.has(id)){
+      triggered.add(id);
+      fn();
+    }
+  }
+  if(!audio.paused && !audio.ended){
+    rafId = requestAnimationFrame(syncLoop);
+  }
+}
+
+audio.addEventListener('play',   ()=> { cancelAnimationFrame(rafId); rafId=requestAnimationFrame(syncLoop); });
+audio.addEventListener('seeked', ()=> { triggered.clear(); cancelAnimationFrame(rafId); rafId=requestAnimationFrame(syncLoop); });
+audio.addEventListener('pause',  ()=> cancelAnimationFrame(rafId));
+audio.addEventListener('ended',  ()=> cancelAnimationFrame(rafId));
+
+// ═══════════════════════════════════════════════════════
+//  DEMO MODE (when audio < 75s — preview file)
+// ═══════════════════════════════════════════════════════
+// If the audio is shorter than the full script, run all
+// scene transitions automatically on a compressed timeline
+// so the visual can be previewed. Remove this block when
+// the real 75s audio is in place.
+let demoMode = false;
+audio.addEventListener('loadedmetadata', ()=>{
+  if(audio.duration < 30){ // preview audio detected
+    demoMode = true;
+  }
+});
+
+function runDemoTimeline(){
+  const SPEED = 0.15; // compress 85s → ~13s
+  let prev = 0;
+  for(const [time, id, fn] of TIMELINE){
+    const ms = (time - prev) * 1000 * SPEED;
+    ((fid, ffn, fms) => {
+      setTimeout(()=>{
+        if(!triggered.has(fid)){
+          triggered.add(fid);
+          ffn();
+        }
+      }, time * 1000 * SPEED);
+    })(id, fn, ms);
+    prev = time;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  START
+// ═══════════════════════════════════════════════════════
+function startVideo(){
+  document.getElementById('play-screen').style.display='none';
+  if(demoMode){
+    runDemoTimeline();
+  } else {
+    audio.play().catch(()=>{
+      // Autoplay blocked — still run demo
+      runDemoTimeline();
+    });
+  }
+}
+
+// Preload check
+audio.load();
+</script>
+</body>
+</html>
